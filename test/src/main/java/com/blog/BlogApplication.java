@@ -1,13 +1,15 @@
-package com.markerhub.vueblog;
+package com.blog;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VueblogApplication {
+@MapperScan("com.example.test.mapper")
+public class BlogApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(VueblogApplication.class, args);
+        SpringApplication.run(BlogApplication.class, args);
     }
 
 }

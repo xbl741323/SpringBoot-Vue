@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+
 //返回结果类
 @Data
 @AllArgsConstructor
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class Result {
     private int code;
     private String msg;
+    private Collection<Employee> list;
+    private Integer total;
 
     @Override
     public String toString() {

@@ -19,9 +19,7 @@ public class BlogApplicationTests {
 
     @Test
     public void contextLoads() {
-        Employee employee;
-        Collection<Employee> emps = empService.getEmp();
-        System.out.println(emps);
+
     }
 
 }

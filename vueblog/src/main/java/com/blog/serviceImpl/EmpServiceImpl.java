@@ -1,5 +1,6 @@
 package com.blog.serviceImpl;
 
+import com.blog.bean.EmpFilters;
 import com.blog.bean.Employee;
 import com.blog.mapper.EmpMapper;
 import com.blog.service.EmpService;
@@ -15,9 +16,14 @@ public class EmpServiceImpl implements EmpService {
     EmpMapper empMapper;
 
     @Override
-    public Collection<Employee> getEmp() {
+    public Collection<Employee> getEmp(EmpFilters empFilters) {
 
-        return empMapper.getEmp();
+        return empMapper.getEmp(empFilters);
+    }
+
+    @Override
+    public Integer getEmpCount() {
+        return empMapper.getEmpCount();
     }
 
     @Override

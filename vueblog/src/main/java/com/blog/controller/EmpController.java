@@ -1,7 +1,9 @@
 package com.blog.controller;
 
 
+import com.blog.bean.EmpFilters;
 import com.blog.bean.Employee;
+import com.blog.bean.Page;
 import com.blog.bean.Result;
 import com.blog.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +33,20 @@ public class EmpController {
     //获取员工
     @RequestMapping("/api/getEmp")
     @ResponseBody
-    public Collection<Employee> getEmp(){
-        Collection<Employee> emps = empService.getEmp();
-        System.out.println(emps);
-        return emps;
+    public Result getEmp(@RequestBody EmpFilters empFilters){
+        System.out.println(empFilters);
+        Collection<Employee> list = empService.getEmp(empFilters);
+        Integer total = empService.getEmpCount();
+        Result result = new Result(1000,"查询成功！",list,total);
+        return result;
     };
 
     //添加员工
     @RequestMapping("/api/addEmp")
     @ResponseBody
     public Result addEmp(@RequestBody Employee employee){
-        System.out.println("输出添加的员工信息！");
-        System.out.println(employee.toString());
         empService.addEmp(employee);
-        Result result = new Result(1000,"添加成功！");
+        Result result = new Result(1000,"添加成功！",null,null);
         return result;
     }
 
@@ -52,10 +54,8 @@ public class EmpController {
     @RequestMapping("/api/editEmp")
     @ResponseBody
     public Result editEmp(@RequestBody Employee employee){
-        System.out.println("输出要编辑的员工信息！");
-        System.out.println(employee);
         empService.editEmp(employee);
-        Result result = new Result(1000,"编辑成功！");
+        Result result = new Result(1000,"编辑成功！",null,null);
         return result;
     }
 
@@ -63,10 +63,8 @@ public class EmpController {
     @RequestMapping("/api/deleteEmp")
     @ResponseBody
     public Result deleteEmp(@RequestBody Employee employee){
-        System.out.println("输出要删除的员工信息！");
-        System.out.println(employee);
         empService.deleteEmp(employee);
-        Result result = new Result(1000,"删除成功！");
+        Result result = new Result(1000,"删除成功！",null,null);
         return  result;
     }
 

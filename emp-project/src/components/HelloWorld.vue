@@ -2,7 +2,19 @@
   <div class="main">
   <div class="about">
     <h3>员工列表</h3>
-    <el-button type="primary" class="add-sty" @click="openAdd">添加员工</el-button>
+    <el-form :model="filters" inline class="filters-sty" @keyup.enter.native="getAllData">
+      <!-- <el-form-item label="关键词：">
+        <el-input v-model="filters.keyWords" placeholder="请输入关键词"></el-input>
+      </el-form-item> -->
+      <el-form-item label="员工姓名：">
+        <el-input v-model="filters.empName" placeholder="请输入关员工姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="部门编号：">
+        <el-input v-model="filters.deptId" placeholder="请输入部门编号"></el-input>
+      </el-form-item>
+    </el-form>
+    <el-button type="success" class="add-sty" @click="openAdd">添加员工</el-button>
+    <el-button type="primary" class="add-sty" @click="getAllData">搜索</el-button>
     <el-table :data="tableData" border>
     <el-table-column prop="id" label="员工编号" align="center"></el-table-column>
     <el-table-column prop="empName" label="员工姓名" align="center"></el-table-column>
@@ -22,8 +34,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="10"
+      :page-sizes="[5, 10, 30, 50, 100]"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -41,8 +53,8 @@
     </el-form-item>
     <el-form-item label="性别：" prop="sex">
       <el-radio-group v-model="empForm.sex" style="margin-left:-350px;">
-        <el-radio :label="0">男</el-radio>
-        <el-radio :label="1">女</el-radio>
+        <el-radio :label="1">男</el-radio>
+        <el-radio :label="0">女</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="部门编号：" prop="deptId">
@@ -72,16 +84,22 @@ export default {
         sex:"",
         deptId:""
       },
+      filters:{
+        keyWords:"",
+        empName:"",
+        deptId:""
+      },
       rules:{
-        id: [{ required: true, message: '请输入', trigger: 'change' }],
-        empName: [{ required: true, message: '请输入', trigger: 'change' }],
-        age: [{ required: true, message: '请输入', trigger: 'change' }],
-        sex: [{ required: true, message: '请选择', trigger: 'change' }],
-        deptId: [{ required: true, message: '请输入', trigger: 'change' }],
+        id: [{ required: true, message: '请输入', trigger: 'blur' }],
+        empName: [{ required: true, message: '请输入', trigger: 'blur' }],
+        age: [{ required: true, message: '请输入', trigger: 'blur' }],
+        sex: [{ required: true, message: '请选择', trigger: 'blur' }],
+        deptId: [{ required: true, message: '请输入', trigger: 'blur' }],
       },
       dialogFormVisible:false,
       total:0,
       currentPage:1,
+      pageSize:5,
       tableData: []
     }
   },
@@ -108,7 +126,7 @@ export default {
                type:"success",
                message:res.data.msg
              })
-             this.getData()
+             this.getAllData()
              this.dialogFormVisible = false
            }
         })
@@ -132,7 +150,7 @@ export default {
                type:"success",
                message:res.data.msg
              })
-             this.getData()
+             this.getAllData()
              this.dialogFormVisible = false
            }
         })
@@ -142,8 +160,14 @@ export default {
     sexFilter(val){
      return val.sex == 0?"女":"男"
     },
-    handleSizeChange(){},
-    handleCurrentChange(){},
+    handleSizeChange(val){
+      this.pageSize = val
+      this.getAllData()
+    },
+    handleCurrentChange(val){
+      this.currentPage = val
+      this.getData()
+    },
     editOpen(row){
       this.empTitle = "编辑员工"
       this.empForm = row
@@ -162,14 +186,26 @@ export default {
                 type:"success",
                 message:"删除成功！"
               })
-              this.getData()
+              this.getAllData()
             }
           })
         })
     },
+    getAllData(){
+      this.currentPage = 1
+      this.getData()
+    },
     getData() {
-      this.axios.get("/api/getEmp").then( res=>{
-        this.tableData = res.data
+      let params = {
+        current:this.currentPage,
+        size:this.pageSize,
+        keyWords:this.filters.keyWords==""?null:this.filters.keyWords,
+        empName:this.filters.empName==""?null:this.filters.empName,
+        deptId:this.filters.deptId==""?null:this.filters.deptId
+      }
+      this.axios.post("/api/getEmp",params).then( res=>{
+        this.tableData = res.data.list
+        this.total = res.data.total
       } )
     }
   },
@@ -202,15 +238,18 @@ a {
   padding: 0 200px;
 }
 .page-sty{
-  float:right;
-  margin:20px 180px 0 0;
+  float: right;
+  margin: 20px 180px 0 0;
 }
 .add-sty{
-  float:right;
-  margin-bottom:20px;
-  margin-right: 10px;
+  float: right;
+  margin: 20px 10px 10px 0px;
 }
 .dialog-sty{
   padding: 40px;
+}
+.filters-sty{
+  float: left;
+  margin: 10px 0 20px 0;
 }
 </style>

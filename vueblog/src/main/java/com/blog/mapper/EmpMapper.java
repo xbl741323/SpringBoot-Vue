@@ -1,5 +1,6 @@
 package com.blog.mapper;
 
+import com.blog.bean.EmpFilters;
 import com.blog.bean.Employee;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +10,10 @@ import java.util.Collection;
 public interface EmpMapper {
 
     //获取所有员工信息
-    public Collection<Employee> getEmp();
+    public Collection<Employee> getEmp(EmpFilters empFilters);
+
+    //获取员工总数
+    public Integer getEmpCount();
 
     //添加员工
     public void addEmp(Employee employee);

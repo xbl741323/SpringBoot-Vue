@@ -2,23 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.blog.mapper.EmpMapper">
     <!-- 查询员工 -->
-    <select id="getEmp" resultType="com.blog.bean.Employee">
-        SELECT * FROM employee;
+    <select id="getEmp" parameterType="com.blog.bean.EmpFilters" resultType="com.blog.bean.Employee">
+        SELECT * FROM employee WHERE (#{empName} IS NULL OR empName=#{empName}) and (#{deptId} IS NULL OR deptId=#{deptId}) LIMIT #{current},#{size};
+    </select>
+
+    <!-- 员工总体数量 -->
+    <select id="getEmpCount" resultType="Integer">
+        SELECT COUNT(*) from employee;
     </select>
 
     <!-- 添加员工 -->
     <insert id="addEmp" parameterType="com.blog.bean.Employee">
-        INSERT INTO employee (id,empName,age,sex,deptId) values (#{id},#{empName},#{age},#{sex},#{deptId})
+        INSERT INTO employee (id,empName,age,sex,deptId) values (#{id},#{empName},#{age},#{sex},#{deptId});
     </insert>
 
     <!-- 编辑员工 -->
     <update id="editEmp" parameterType="com.blog.bean.Employee">
-        UPDATE employee SET id=#{id},empName=#{empName},age=#{age},sex=#{sex},deptId=#{deptId} WHERE id = #{id}
+        UPDATE employee SET id=#{id},empName=#{empName},age=#{age},sex=#{sex},deptId=#{deptId} WHERE id = #{id};
     </update>
 
     <!-- 删除员工 -->
     <delete id="deleteEmp" parameterType="com.blog.bean.Employee">
-        DELETE FROM employee WHERE id = #{id}
+        DELETE FROM employee WHERE id = #{id};
     </delete>
 
 </mapper>

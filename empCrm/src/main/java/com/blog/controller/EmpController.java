@@ -3,15 +3,12 @@ package com.blog.controller;
 
 import com.blog.bean.EmpFilters;
 import com.blog.bean.Employee;
-import com.blog.bean.Page;
 import com.blog.bean.Result;
 import com.blog.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Collection;

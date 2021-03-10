@@ -137,11 +137,11 @@ export default {
       this.$refs["empForm"].validate(val=>{
         if(val){
           let params = {
-           id:this.empForm.id,
+           id:Number(this.empForm.id),
            empName:this.empForm.empName,
-           age:this.empForm.age,
-           sex:this.empForm.sex,
-           deptId:this.empForm.deptId
+           age:Number(this.empForm.age),
+           sex:Number(this.empForm.sex),
+           deptId:Number(this.empForm.deptId)
           }
          this.axios.post("/api/addEmp",params).then(res=>{
            console.log(res,"请求结果！")

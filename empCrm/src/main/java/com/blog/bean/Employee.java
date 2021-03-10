@@ -16,7 +16,7 @@ public class Employee {
     private String empName;
     private Integer age;
     private Integer sex; //0女 1男
-    private Integer deptId;
+    private String deptId;
 
     @Override
     public String toString() {

@@ -12,7 +12,7 @@ public class EmpFilters {
     private Integer current;
     private Integer size;
     private String empName;
-    private Integer deptId;
+    private String deptId;
 
     public Integer getCurrent() {
         return (current-1)*size;

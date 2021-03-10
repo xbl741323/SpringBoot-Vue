@@ -3,7 +3,16 @@
 <mapper namespace="com.blog.mapper.EmpMapper">
     <!-- 查询员工 -->
     <select id="getEmp" parameterType="com.blog.bean.EmpFilters" resultType="com.blog.bean.Employee">
-        SELECT * FROM employee WHERE (#{empName} IS NULL OR empName=#{empName}) and (#{deptId} IS NULL OR deptId=#{deptId}) LIMIT #{current},#{size};
+        SELECT * FROM employee
+        <where>
+            <if test="empName != null">
+                empName LIKE "%"#{empName}"%"
+            </if>
+            <if test="deptId != null">
+                and deptId LIKE "%"#{deptId}"%"
+            </if>
+        </where>
+            LIMIT #{current},#{size};
     </select>
 
     <!-- 员工总体数量 -->

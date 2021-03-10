@@ -23,6 +23,7 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public Integer getEmpCount() {
+
         return empMapper.getEmpCount();
     }
 
